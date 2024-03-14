@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
+import projeto.server.enums.HttpStatus;
 import projeto.server.pojos.Request;
 
 public class Mappers {
@@ -37,14 +38,22 @@ public class Mappers {
             }
         }
 
-        System.out.println(headers);
         // Usa o read para ler o conteudo do body
         if (contentLength > 0) {
             char[] ch = new char[contentLength];
             reader.read(ch, 0, contentLength);
             body.append(ch);
         }
-
         return new Request(headers, body.toString());
+    }
+
+    public static String mapHeadersToStringResponse(Map<String, String> headers, HttpStatus status) {
+        StringBuilder header = new StringBuilder();
+
+        header.append("HTTP/1.1 ").append(status.toString()).append("\r\n")
+                .append("Content-Type: ").append(headers.get("Content-Type")).append("\r\n")
+                .append("Content-Length: ").append(headers.get("Content-Length"));
+
+        return header.toString();
     }
 }
