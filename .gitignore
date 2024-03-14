@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### SOMENTE PARA TESTS DA APLICACAO ###
+src/main/java/projeto/server/app
