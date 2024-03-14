@@ -7,9 +7,11 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
+import projeto.server.pojos.Request;
+
 public class Mappers {
 
-    public static String mapInputStreamToString(InputStream inputStream) throws IOException {
+    public static Request mapInputStreamToRequest(InputStream inputStream) throws IOException {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         Map<String, String> headers = new HashMap<>();
@@ -24,6 +26,10 @@ public class Mappers {
                 String key = line.split(":")[0].trim();
                 String value = line.split(":")[1].trim();
                 headers.put(key, value);
+            } else {
+                String[] firstLine = line.split(" ");
+                headers.put("method", firstLine[0]);
+                headers.put("route", firstLine[1]);
             }
 
             if (line.startsWith("Content-Length:")) {
@@ -39,6 +45,6 @@ public class Mappers {
             body.append(ch);
         }
 
-        return body.toString();
+        return new Request(headers, body.toString());
     }
 }

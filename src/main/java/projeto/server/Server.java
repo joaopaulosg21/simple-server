@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import projeto.server.mapper.Mappers;
+import projeto.server.pojos.Request;
 
 public class Server {
 
@@ -24,8 +25,8 @@ public class Server {
         while (true) {
             Socket client = serverSocket.accept();
 
-            String body = Mappers.mapInputStreamToString(client.getInputStream());
-            System.out.println(body);
+            Request request = Mappers.mapInputStreamToRequest(client.getInputStream());
+            System.out.println(request.getHeaders().get("route"));
             client.close();
         }
     }
