@@ -8,7 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import projeto.server.enums.DefaultResponses;
 import projeto.server.enums.HttpMethod;
+import projeto.server.enums.HttpStatus;
 import projeto.server.interfaces.RouteRunner;
 import projeto.server.mapper.Mappers;
 import projeto.server.pojos.Request;
@@ -68,12 +70,10 @@ public class Server {
         for (Map<String, String> map : routes.keySet()) {
             if (map.get("path").equals(route) && map.get("method").equals(method)) {
                 return routes.get(map).execute(request);
-            } else {
-                System.out.println("Deu errado");
             }
         }
-
-        return null;
+        DefaultResponses body = DefaultResponses.ROUTE_NOT_FOUND;
+        return new Response(request.getHeaders(), body.toString(), HttpStatus.OK);
     }
 
     private boolean isValidMethod(String method) {
