@@ -52,7 +52,7 @@ public class Mappers {
 
         header.append("HTTP/1.1 ").append(status.toString()).append("\r\n")
                 .append("Content-Type: ").append(headers.get("Content-Type")).append("\r\n")
-                .append("Content-Length: ").append(headers.get("Content-Length"));
+                .append("Content-Length: ").append(headers.get("Content-Length")).append("\n\n");
 
         return header.toString();
     }
