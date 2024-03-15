@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import projeto.server.enums.HttpMethod;
-import projeto.server.enums.HttpStatus;
 import projeto.server.interfaces.RouteRunner;
 import projeto.server.mapper.Mappers;
 import projeto.server.pojos.Request;
@@ -44,7 +43,8 @@ public class Server {
                 OutputStream clientOutputStream = client.getOutputStream();
                 response.getHeaders().put("Content-Length", String.valueOf(response.getBody().length()));
                 clientOutputStream
-                        .write(Mappers.mapHeadersToStringResponse(response.getHeaders(), HttpStatus.OK).getBytes());
+                        .write(Mappers.mapHeadersToStringResponse(response.getHeaders(), response.getStatus())
+                                .getBytes());
                 clientOutputStream.write(response.getBody().getBytes());
             }
             client.close();
