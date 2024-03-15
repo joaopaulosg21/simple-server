@@ -6,7 +6,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
+import projeto.server.enums.HttpMethod;
 import projeto.server.enums.HttpStatus;
 import projeto.server.interfaces.RouteRunner;
 import projeto.server.mapper.Mappers;
@@ -38,16 +40,21 @@ public class Server {
 
             Response response = this.handleRequest(request);
 
-            OutputStream clientOutputStream = client.getOutputStream();
-            response.getHeaders().put("Content-Length", String.valueOf(response.getBody().length()));
-            clientOutputStream
-                    .write(Mappers.mapHeadersToStringResponse(response.getHeaders(), HttpStatus.OK).getBytes());
-            clientOutputStream.write(response.getBody().getBytes());
+            if (!Objects.isNull(response)) {
+                OutputStream clientOutputStream = client.getOutputStream();
+                response.getHeaders().put("Content-Length", String.valueOf(response.getBody().length()));
+                clientOutputStream
+                        .write(Mappers.mapHeadersToStringResponse(response.getHeaders(), HttpStatus.OK).getBytes());
+                clientOutputStream.write(response.getBody().getBytes());
+            }
             client.close();
         }
     }
 
     public void addNewRoute(String path, String method, RouteRunner routeRunner) {
+        if (!this.isValidMethod(method)) {
+            throw new RuntimeException("Método HTTP invalido");
+        }
         Map<String, String> pathMethod = new HashMap<>();
         pathMethod.put("path", path);
         pathMethod.put("method", method);
@@ -67,5 +74,9 @@ public class Server {
         }
 
         return null;
+    }
+
+    private boolean isValidMethod(String method) {
+        return HttpMethod.GET.equals(method) || HttpMethod.POST.equals(method);
     }
 }
