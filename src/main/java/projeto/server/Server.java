@@ -73,7 +73,9 @@ public class Server {
             }
         }
         DefaultResponses body = DefaultResponses.ROUTE_NOT_FOUND;
-        return new Response(request.getHeaders(), body.toString(), HttpStatus.OK);
+        var headers = request.getHeaders();
+        headers.put("Content-Type","text/HTML");
+        return new Response(headers, body.toString(), HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     private boolean isValidMethod(String method) {
