@@ -77,6 +77,8 @@ public class Server {
     }
 
     private boolean isValidMethod(String method) {
-        return HttpMethod.GET.equals(method) || HttpMethod.POST.equals(method);
+        return HttpMethod.GET.equals(method) || HttpMethod.POST.equals(method)
+                || HttpMethod.PUT.equals(method) || HttpMethod.PATCH.equals(method)
+                || HttpMethod.DELETE.equals(method);
     }
 }
