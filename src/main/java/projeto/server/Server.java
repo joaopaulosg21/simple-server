@@ -10,6 +10,7 @@ import java.util.Objects;
 
 import projeto.server.enums.DefaultResponses;
 import projeto.server.enums.HttpStatus;
+import projeto.server.interfaces.Route;
 import projeto.server.interfaces.RouteRunner;
 import projeto.server.mapper.Mappers;
 import projeto.server.pojos.PathMethod;
@@ -55,6 +56,10 @@ public class Server {
 
     public void addNewRoute(PathMethod pathMethod, RouteRunner routeRunner) {
         routes.put(pathMethod, routeRunner);
+    }
+
+    public void addNewRoute(Route route) {
+        routes.put(route.getPathMethod(), route.getRouteRunner());
     }
 
     private Response handleRequest(Request request) {
