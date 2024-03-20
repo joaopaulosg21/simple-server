@@ -53,10 +53,7 @@ public class Server {
         }
     }
 
-    public void addNewRoute(String path, String method, RouteRunner routeRunner) {
-        PathMethod pathMethod = new PathMethod();
-        pathMethod.setPath(path);
-        pathMethod.setMethod(method);
+    public void addNewRoute(PathMethod pathMethod, RouteRunner routeRunner) {
         routes.put(pathMethod, routeRunner);
     }
 
