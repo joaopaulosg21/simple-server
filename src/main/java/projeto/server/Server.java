@@ -9,10 +9,10 @@ import java.util.Map;
 import java.util.Objects;
 
 import projeto.server.enums.DefaultResponses;
-import projeto.server.enums.HttpMethod;
 import projeto.server.enums.HttpStatus;
 import projeto.server.interfaces.RouteRunner;
 import projeto.server.mapper.Mappers;
+import projeto.server.pojos.PathMethod;
 import projeto.server.pojos.Request;
 import projeto.server.pojos.Response;
 
@@ -22,7 +22,7 @@ public class Server {
 
     private ServerSocket serverSocket;
 
-    private Map<Map<String, String>, RouteRunner> routes;
+    private Map<PathMethod, RouteRunner> routes;
 
     public Server(int port) {
         this.port = port;
@@ -54,33 +54,28 @@ public class Server {
     }
 
     public void addNewRoute(String path, String method, RouteRunner routeRunner) {
-        if (!this.isValidMethod(method)) {
-            throw new RuntimeException("Método HTTP invalido");
-        }
-        Map<String, String> pathMethod = new HashMap<>();
-        pathMethod.put("path", path);
-        pathMethod.put("method", method);
+        PathMethod pathMethod = new PathMethod();
+        pathMethod.setPath(path);
+        pathMethod.setMethod(method);
         routes.put(pathMethod, routeRunner);
     }
 
     private Response handleRequest(Request request) {
-        String route = request.getHeaders().get("route");
+        String path = request.getHeaders().get("path");
         String method = request.getHeaders().get("method");
+        PathMethod pathMethod = new PathMethod();
+        pathMethod.setPath(path);
+        pathMethod.setMethod(method);
 
-        for (Map<String, String> map : routes.keySet()) {
-            if (map.get("path").equals(route) && map.get("method").equals(method)) {
-                return routes.get(map).execute(request);
+        for (var route : routes.keySet()) {
+            if (route.equals(pathMethod)) {
+                return routes.get(route).execute(request);
             }
         }
+
         DefaultResponses body = DefaultResponses.ROUTE_NOT_FOUND;
         var headers = request.getHeaders();
-        headers.put("Content-Type","text/HTML");
+        headers.put("Content-Type", "text/HTML");
         return new Response(headers, body.toString(), HttpStatus.METHOD_NOT_ALLOWED);
-    }
-
-    private boolean isValidMethod(String method) {
-        return HttpMethod.GET.equals(method) || HttpMethod.POST.equals(method)
-                || HttpMethod.PUT.equals(method) || HttpMethod.PATCH.equals(method)
-                || HttpMethod.DELETE.equals(method);
     }
 }

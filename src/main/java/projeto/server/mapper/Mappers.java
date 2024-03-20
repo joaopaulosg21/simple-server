@@ -30,7 +30,7 @@ public class Mappers {
             } else {
                 String[] firstLine = line.split(" ");
                 headers.put("method", firstLine[0]);
-                headers.put("route", firstLine[1]);
+                headers.put("path", firstLine[1]);
             }
 
             if (line.startsWith("Content-Length:")) {
