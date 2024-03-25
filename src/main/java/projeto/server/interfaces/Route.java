@@ -2,11 +2,23 @@ package projeto.server.interfaces;
 
 import projeto.server.pojos.PathMethod;
 
-public interface Route {
+public abstract class Route {
 
-    void setPathMethod(PathMethod pathMethod);
+    private PathMethod pathMethod;
 
-    PathMethod getPathMethod();
-    
-    RouteRunner getRouteRunner();
+    public Route(PathMethod pathMethod) {
+        this.pathMethod = pathMethod;
+    }
+
+    public Route(){}
+
+    public void setPathMethod(PathMethod pathMethod) {
+        this.pathMethod = pathMethod;
+    }
+
+    public PathMethod getPathMethod() {
+        return this.pathMethod;
+    }
+
+    public abstract RouteRunner getRouteRunner();
 }
