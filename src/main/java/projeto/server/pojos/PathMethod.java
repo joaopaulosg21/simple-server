@@ -64,11 +64,12 @@ public class PathMethod {
 
     @Override
     public boolean equals(Object o) {
-        if(o == null) return false;
+        if (o == null)
+            return false;
 
         PathMethod pathMethod = (PathMethod) o;
 
-        if(this.path.equals(pathMethod.getPath()) && this.method == pathMethod.getMethod()) {
+        if (this.path.equals(pathMethod.getPath()) && this.method == pathMethod.getMethod()) {
             return true;
         }
 

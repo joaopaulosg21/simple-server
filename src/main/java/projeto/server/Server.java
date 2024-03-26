@@ -14,6 +14,7 @@ import projeto.server.interfaces.Route;
 import projeto.server.interfaces.RouteRunner;
 import projeto.server.mapper.Mappers;
 import projeto.server.pojos.PathMethod;
+import projeto.server.pojos.PathMethodParameter;
 import projeto.server.pojos.Request;
 import projeto.server.pojos.Response;
 
@@ -63,14 +64,19 @@ public class Server {
     }
 
     private Response handleRequest(Request request) {
-        String path = request.getHeaders().get("path");
-        String method = request.getHeaders().get("method");
+        String requestPath = request.getHeaders().get("path");
+        String requestMethod = request.getHeaders().get("method");
         PathMethod pathMethod = new PathMethod();
-        pathMethod.setPath(path);
-        pathMethod.setMethod(method);
+        pathMethod.setPath(requestPath);
+        pathMethod.setMethod(requestMethod);
+
+        PathMethodParameter pathMethodParameter = new PathMethodParameter(requestPath);
 
         for (var route : routes.keySet()) {
             if (route.equals(pathMethod)) {
+                return routes.get(route).execute(request);
+            } else if (pathMethodParameter.matchesPathVariable(route.getPath())) {
+                request.setPathVariables(pathMethodParameter.getParameters());
                 return routes.get(route).execute(request);
             }
         }
