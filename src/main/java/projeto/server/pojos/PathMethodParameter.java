@@ -17,7 +17,7 @@ public class PathMethodParameter {
     }
 
     public boolean matchesPathVariable(String path) {
-        // routePath é o caminho da rota do server, e o
+        // serverPath é o caminho da rota do server, e o
         // requestPath é o caminho da requisição que ta sendo feita
 
         this.setRoutePath(path);
@@ -37,13 +37,13 @@ public class PathMethodParameter {
     }
 
     public List<String> getParameters() {
-        String[] routePath = this.routePath.split("/");
+        String[] serverPath = this.routePath.split("/");
         String[] requestPath = this.path.split("/");
 
         List<String> variables = new ArrayList<>();
 
-        for (int i = 0; i < routePath.length; i++) {
-            if (routePath[i].startsWith("{")) {
+        for (int i = 0; i < serverPath.length; i++) {
+            if (serverPath[i].startsWith("{")) {
                 variables.add(requestPath[i]);
             }
         }
