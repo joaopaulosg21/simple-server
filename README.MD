@@ -19,4 +19,4 @@
 
 - [x] Feature para identificar rotas com path variables e adiciona-las no objeto de Request
 
-- [ ] Feature para identificar query params e adicionar no objeto de Request
+- [x] Feature para identificar query params e adicionar no objeto de Request
