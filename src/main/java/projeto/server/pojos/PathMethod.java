@@ -1,5 +1,8 @@
 package projeto.server.pojos;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import projeto.server.enums.HttpMethod;
 
 public class PathMethod {
@@ -74,5 +77,28 @@ public class PathMethod {
         }
 
         return false;
+    }
+
+    public Map<String, String> getQueryParams() {
+        Map<String, String> params = new HashMap<>();
+        if (this.path.contains("?")) {
+            String query = this.path.split("\\?")[1];
+
+            if (query.contains("&")) {
+                for (String param : query.split("&")) {
+                    String[] arr = param.split("=");
+                    params.put(arr[0], arr[1]);
+                }
+            } else {
+                String[] arr = query.split("=");
+                params.put(arr[0], arr[1]);
+            }
+        }
+        this.setPath(this.path.split("\\?")[0]);
+        return params;
+    }
+
+    public boolean containsQueryParams() {
+        return this.path.contains("?");
     }
 }

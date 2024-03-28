@@ -78,6 +78,10 @@ public class Server {
             } else if (pathMethodParameter.matchesPathVariable(route.getPath())) {
                 request.setPathVariables(pathMethodParameter.getParameters());
                 return routes.get(route).execute(request);
+            } else if (pathMethod.containsQueryParams()) {
+                request.setQueryParams(pathMethod.getQueryParams());
+                request.getHeaders().put("path", pathMethod.getPath());
+                return this.handleRequest(request);
             }
         }
 
