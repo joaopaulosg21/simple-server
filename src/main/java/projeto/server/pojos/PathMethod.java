@@ -19,6 +19,11 @@ public class PathMethod {
         this.method = method;
     }
 
+    public PathMethod(String path, String method) {
+        this.path = path;
+        this.setMethod(method);
+    }
+
     public String getPath() {
         return path;
     }

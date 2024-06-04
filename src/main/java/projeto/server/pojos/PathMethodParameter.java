@@ -4,31 +4,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PathMethodParameter {
-    private String path;
+    private String requestedPath;
 
-    private String routePath;
+    private String serverPath;
 
-    public PathMethodParameter(String path) {
-        this.path = path;
+    public PathMethodParameter(String requestedPath) {
+        this.requestedPath = requestedPath;
     }
 
-    public void setRoutePath(String routePath) {
-        this.routePath = routePath;
+    public void setServerPath(String serverPath) {
+        this.serverPath = serverPath;
     }
 
     public boolean matchesPathVariable(String path) {
         // serverPath é o caminho da rota do server, e o
-        // requestPath é o caminho da requisição que ta sendo feita
+        // requestedPath é o caminho da requisição que ta sendo feita
 
-        this.setRoutePath(path);
-        String[] serverPath = path.split("/");
-        String[] requestPath = this.path.split("/");
-        if (serverPath.length != requestPath.length) {
+        this.setServerPath(path);
+        String[] serverPathArr = this.serverPath.split("/");
+        String[] requestPathArr = this.requestedPath.split("/");
+        if (serverPathArr.length != requestPathArr.length) {
             return false;
         }
 
-        for (int i = 0; i < serverPath.length; i++) {
-            if (!requestPath[i].equals(serverPath[i]) && !serverPath[i].startsWith("{")) {
+        for (int i = 0; i < serverPathArr.length; i++) {
+            if (!requestPathArr[i].equals(serverPathArr[i]) && !serverPathArr[i].startsWith("{")) {
                 return false;
             }
         }
@@ -37,14 +37,14 @@ public class PathMethodParameter {
     }
 
     public List<String> getParameters() {
-        String[] serverPath = this.routePath.split("/");
-        String[] requestPath = this.path.split("/");
+        String[] serverPathArr = this.serverPath.split("/");
+        String[] requestPathArr = this.requestedPath.split("/");
 
         List<String> variables = new ArrayList<>();
 
-        for (int i = 0; i < serverPath.length; i++) {
-            if (serverPath[i].startsWith("{")) {
-                variables.add(requestPath[i]);
+        for (int i = 0; i < serverPathArr.length; i++) {
+            if (serverPathArr[i].startsWith("{")) {
+                variables.add(requestPathArr[i]);
             }
         }
 
