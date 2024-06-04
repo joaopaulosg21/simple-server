@@ -14,7 +14,6 @@ import projeto.server.interfaces.Route;
 import projeto.server.interfaces.RouteRunner;
 import projeto.server.mapper.Mappers;
 import projeto.server.pojos.PathMethod;
-import projeto.server.pojos.PathMethodParameter;
 import projeto.server.pojos.Request;
 import projeto.server.pojos.Response;
 
@@ -68,14 +67,12 @@ public class Server {
         String requestMethod = request.getHeaders().get("method");
         PathMethod pathMethod = new PathMethod(requestPath,requestMethod);
 
-        PathMethodParameter pathMethodParameter = new PathMethodParameter(requestPath);
-
         //route -> verifica cada rota que está armazenada no server
         for (var route : routes.keySet()) {
             if (route.equals(pathMethod)) {
                 return routes.get(route).execute(request);
-            } else if (pathMethodParameter.matchesPathVariable(route.getPath())) {
-                request.setPathVariables(pathMethodParameter.getParameters());
+            } else if (pathMethod.matchesPathVariable(route.getPath())) {
+                request.setPathVariables(pathMethod.getParameters(route.getPath()));
                 return routes.get(route).execute(request);
             } else if (pathMethod.containsQueryParams()) {
                 request.setQueryParams(pathMethod.getQueryParams());

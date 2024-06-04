@@ -1,6 +1,8 @@
 package projeto.server.pojos;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import projeto.server.enums.HttpMethod;
@@ -105,5 +107,39 @@ public class PathMethod {
 
     public boolean containsQueryParams() {
         return this.path.contains("?");
+    }
+
+        public boolean matchesPathVariable(String serverPath) {
+        // serverPath é o caminho da rota do server, e o
+        // requestedPath é o caminho da requisição que ta sendo feita
+
+        String[] serverPathArr = serverPath.split("/");
+        String[] requestPathArr = this.path.split("/");
+        if (serverPathArr.length != requestPathArr.length) {
+            return false;
+        }
+
+        for (int i = 0; i < serverPathArr.length; i++) {
+            if (!requestPathArr[i].equals(serverPathArr[i]) && !serverPathArr[i].startsWith("{")) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public List<String> getParameters(String serverPath) {
+        String[] serverPathArr = serverPath.split("/");
+        String[] requestPathArr = this.path.split("/");
+
+        List<String> variables = new ArrayList<>();
+
+        for (int i = 0; i < serverPathArr.length; i++) {
+            if (serverPathArr[i].startsWith("{")) {
+                variables.add(requestPathArr[i]);
+            }
+        }
+
+        return variables;
     }
 }
