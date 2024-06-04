@@ -65,18 +65,18 @@ public class Server {
     private Response handleRequest(Request request) {
         String requestPath = request.getHeaders().get("path");
         String requestMethod = request.getHeaders().get("method");
-        PathMethod pathMethod = new PathMethod(requestPath,requestMethod);
+        PathMethod pathMethod = new PathMethod(requestPath, requestMethod);
 
-        //route -> verifica cada rota que está armazenada no server
+        // route -> verifica cada rota que está armazenada no server
         for (var route : routes.keySet()) {
             if (route.equals(pathMethod)) {
                 return routes.get(route).execute(request);
-            } else if (pathMethod.matchesPathVariable(route.getPath())) {
-                request.setPathVariables(pathMethod.getParameters(route.getPath()));
+            } else if (pathMethod.matchesPathVariable(route.getRequestPath())) {
+                request.setPathVariables(pathMethod.getParameters(route.getRequestPath()));
                 return routes.get(route).execute(request);
             } else if (pathMethod.containsQueryParams()) {
                 request.setQueryParams(pathMethod.getQueryParams());
-                request.getHeaders().put("path", pathMethod.getPath());
+                request.getHeaders().put("path", pathMethod.getRequestPath());
                 return this.handleRequest(request);
             }
         }

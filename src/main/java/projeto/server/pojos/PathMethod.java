@@ -9,29 +9,29 @@ import projeto.server.enums.HttpMethod;
 
 public class PathMethod {
 
-    private String path;
+    private String requestPath;
 
     private HttpMethod method;
 
     public PathMethod() {
     }
 
-    public PathMethod(String path, HttpMethod method) {
-        this.path = path;
+    public PathMethod(String requestPath, HttpMethod method) {
+        this.requestPath = requestPath;
         this.method = method;
     }
 
-    public PathMethod(String path, String method) {
-        this.path = path;
+    public PathMethod(String requestPath, String method) {
+        this.requestPath = requestPath;
         this.setMethod(method);
     }
 
-    public String getPath() {
-        return path;
+    public String getRequestPath() {
+        return requestPath;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setRequestPath(String requestPath) {
+        this.requestPath = requestPath;
     }
 
     public HttpMethod getMethod() {
@@ -79,7 +79,7 @@ public class PathMethod {
 
         PathMethod pathMethod = (PathMethod) o;
 
-        if (this.path.equals(pathMethod.getPath()) && this.method == pathMethod.getMethod()) {
+        if (this.requestPath.equals(pathMethod.getRequestPath()) && this.method == pathMethod.getMethod()) {
             return true;
         }
 
@@ -88,8 +88,8 @@ public class PathMethod {
 
     public Map<String, String> getQueryParams() {
         Map<String, String> params = new HashMap<>();
-        if (this.path.contains("?")) {
-            String query = this.path.split("\\?")[1];
+        if (this.requestPath.contains("?")) {
+            String query = this.requestPath.split("\\?")[1];
 
             if (query.contains("&")) {
                 for (String param : query.split("&")) {
@@ -101,20 +101,20 @@ public class PathMethod {
                 params.put(arr[0], arr[1]);
             }
         }
-        this.setPath(this.path.split("\\?")[0]);
+        this.setRequestPath(this.requestPath.split("\\?")[0]);
         return params;
     }
 
     public boolean containsQueryParams() {
-        return this.path.contains("?");
+        return this.requestPath.contains("?");
     }
 
-        public boolean matchesPathVariable(String serverPath) {
+    public boolean matchesPathVariable(String serverPath) {
         // serverPath é o caminho da rota do server, e o
         // requestedPath é o caminho da requisição que ta sendo feita
 
         String[] serverPathArr = serverPath.split("/");
-        String[] requestPathArr = this.path.split("/");
+        String[] requestPathArr = this.requestPath.split("/");
         if (serverPathArr.length != requestPathArr.length) {
             return false;
         }
@@ -130,7 +130,7 @@ public class PathMethod {
 
     public List<String> getParameters(String serverPath) {
         String[] serverPathArr = serverPath.split("/");
-        String[] requestPathArr = this.path.split("/");
+        String[] requestPathArr = this.requestPath.split("/");
 
         List<String> variables = new ArrayList<>();
 
