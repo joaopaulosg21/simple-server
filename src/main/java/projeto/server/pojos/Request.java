@@ -1,8 +1,6 @@
 package projeto.server.pojos;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Request {
@@ -11,14 +9,14 @@ public class Request {
 
     private String body;
 
-    private List<String> pathVariables;
+    private Map<String, String> pathVariables;
 
     private Map<String, String> queryParams;
 
     public Request(Map<String, String> headers, String body) {
         this.headers = headers;
         this.body = body;
-        this.pathVariables = new ArrayList<>();
+        this.pathVariables = new HashMap<>();
         this.queryParams = new HashMap<>();
     }
 
@@ -38,11 +36,11 @@ public class Request {
         this.body = body;
     }
 
-    public List<String> getPathVariables() {
+    public Map<String, String> getPathVariables() {
         return pathVariables;
     }
 
-    public void setPathVariables(List<String> pathVariables) {
+    public void setPathVariables(Map<String, String> pathVariables) {
         this.pathVariables = pathVariables;
     }
 

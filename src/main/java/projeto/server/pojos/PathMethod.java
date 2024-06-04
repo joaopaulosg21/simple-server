@@ -1,8 +1,6 @@
 package projeto.server.pojos;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import projeto.server.enums.HttpMethod;
@@ -128,15 +126,16 @@ public class PathMethod {
         return true;
     }
 
-    public List<String> getParameters(String serverPath) {
+    public Map<String, String> getParameters(String serverPath) {
         String[] serverPathArr = serverPath.split("/");
         String[] requestPathArr = this.requestPath.split("/");
 
-        List<String> variables = new ArrayList<>();
+        Map<String, String> variables = new HashMap<>();
 
         for (int i = 0; i < serverPathArr.length; i++) {
             if (serverPathArr[i].startsWith("{")) {
-                variables.add(requestPathArr[i]);
+                var variableName = serverPathArr[i].replace("{", "").replace("}", "");
+                variables.put(variableName, requestPathArr[i]);
             }
         }
 
