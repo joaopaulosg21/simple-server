@@ -107,10 +107,12 @@ public class PathMethod {
         return this.requestPath.contains("?");
     }
 
-    public boolean matchesPathVariable(String serverPath) {
+    public boolean matchesPathVariable(String serverPath, HttpMethod method) {
         // serverPath é o caminho da rota do server, e o
         // requestedPath é o caminho da requisição que ta sendo feita
-
+        if (this.method != method) {
+            return false;
+        }
         String[] serverPathArr = serverPath.split("/");
         String[] requestPathArr = this.requestPath.split("/");
         if (serverPathArr.length != requestPathArr.length) {
@@ -141,4 +143,10 @@ public class PathMethod {
 
         return variables;
     }
+
+    @Override
+    public String toString() {
+        return "[Path=" + requestPath + ", method=" + method + "]";
+    }
+
 }
